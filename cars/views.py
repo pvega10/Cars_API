@@ -1,3 +1,4 @@
+from urllib import response
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -18,3 +19,14 @@ def car_list(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
         
+@api_view (["GET"])
+def car_detail(request, pk):
+    try:    
+        car = Car.objects.get (pk=pk)
+        serializer = CarSerializer(car)
+        return Response(serializer.data)
+
+    except Car.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    
